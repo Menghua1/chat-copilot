@@ -311,5 +311,30 @@ resource appServiceWebConfig 'Microsoft.Web/sites/config@2022-09-01' = {
   ]
 }
 
+resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = if (frontendClientId != '') {
+  name: 'AddRedirectUriScript'
+  location: location
+  kind: 'AzureCLI'
+  properties: {
+    environmentVariables: [
+      {
+        name: 'frontendClientId'
+        value: frontendClientId
+      }
+      {
+        name: 'webUrl'
+        value: 'https://${apiService.properties.defaultHostName}'
+      }
+    ]
+    scriptContent: '''
+      ./add-redirecturl.ps1
+    '''
+    supportingScriptUris: [ 'https://raw.githubusercontent.com/Menghua1/chat-copilot/test/webapp/add-redirecturl.sh' ]
+    azCliVersion: '2.37.0'
+    retentionInterval: 'PT1H'
+    cleanupPreference: 'OnSuccess'
+  }
+}
+
 output url string = 'https://${apiService.properties.defaultHostName}'
 output name string = apiService.name
