@@ -327,7 +327,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = i
       }
     ]
     scriptContent: '''
-      ./add-redirecturl.ps1
+      ./add-redirecturl.sh
     '''
     supportingScriptUris: [ 'https://raw.githubusercontent.com/Menghua1/chat-copilot/test/webapp/add-redirecturl.sh' ]
     azCliVersion: '2.37.0'
